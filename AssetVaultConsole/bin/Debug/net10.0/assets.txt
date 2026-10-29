@@ -1,0 +1,30 @@
+ID: 6bc096b2-b92f-4eb2-9804-ead960a0af69
+Name: Dengse
+Type: Laptop
+Purchase date: 2022-09-13
+Assigned: False
+
+ID: e2573ded-99d5-4958-96ca-4f2e59ad5137
+Name: Pikhoved
+Type: Laptop
+Purchase date: 2022-09-13
+Assigned: False
+
+ID: ed8000d6-c981-45dc-88cc-2385cc0eb068
+Name: Hermofrodit
+Type: Laptop
+Purchase date: 2013-02-14
+Assigned: False
+
+ID: 48655371-61bc-4c07-9ed2-cf62a42a2dd0
+Name: Hej
+Type: Server
+Purchase date: 1333-09-12
+Assigned: False
+
+ID: 7707e353-8c86-4a07-a085-703b3cafa463
+Name: Mongolas
+Type: Desktop
+Purchase date: 1010-03-03
+Assigned: False
+
