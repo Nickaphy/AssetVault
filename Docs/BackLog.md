@@ -62,8 +62,8 @@ Each asset must contain:
 - [x] Handle nonexistent assets gracefully.
 
 ### AV-004 — Remove Assets
-- [ ] Remove an asset by its ID.
-- [ ] Reject removal requests for nonexistent assets.
+- [x] Remove an asset by its ID.
+- [x] Reject removal requests for nonexistent assets.
 - [ ] Verify the asset has been removed.
 
 ### AV-005 — Console Navigation

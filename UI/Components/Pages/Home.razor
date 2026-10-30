@@ -1,0 +1,90 @@
+@page "/"
+@using Application.ApplicationService
+@using Core.Entities
+@using Core.Enums
+@rendermode InteractiveServer
+@*DI imports*@ 
+@inject AssetImportService ImportService
+@inject AssetDeleteService DeleteService
+@inject AssetExportService ExportService
+
+<PageTitle>AssetVault</PageTitle>
+
+<h1>AssetVault</h1>
+
+<h2>Register asset</h2>
+<form @onsubmit="RegisterAsset" @onsubmit:preventDefault>
+    <label for="name">Name</label>
+    <input id="name" @bind="assetName" required />
+
+    <label for="type">Type</label>
+    <select id="type" @bind="assetType">
+        @foreach (var type in Enum.GetValues<AssetType>())
+        {
+            <option value="@type">@type</option>
+        }
+    </select>
+
+    <label for="purchaseDate">Purchase date</label>
+    <input id="purchaseDate" type="date" @bind="purchaseDate" required />
+
+    <button type="submit">Register</button>
+</form>
+
+<h2>Assets</h2>
+<button @onclick="LoadAssets">Load assets</button>
+
+@if (assets.Count == 0)
+{
+    <p>No assets loaded.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr><th>Name</th><th>Type</th><th>Purchase date</th><th>Assigned</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var asset in assets)
+            {
+                <tr @key="asset.Id">
+                    <td>@asset.Name</td>
+                    <td>@asset.Type</td>
+                    <td>@asset.PurchaseDate.ToString("yyyy-MM-dd")</td>
+                    <td>@asset.IsAssigned</td>
+                    <td><button @onclick="() => DeleteAsset(asset)">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Asset> assets = new();
+    private string assetName = "";
+    private AssetType assetType = AssetType.Laptop;
+    private DateTime purchaseDate = DateTime.Today;
+
+    private void LoadAssets()
+    {
+        // Import the assets, ToList() needed because the importer returns IEnumerable and assets is a list
+        assets = ImportService.ImportAssets().ToList();
+    }
+
+    private void RegisterAsset()
+    {
+        // Saves only the new asset
+        var asset = Asset.CreateAsset(assetName, assetType, purchaseDate);
+        ExportService.ExportAsset(new List<Asset> { asset });
+        LoadAssets();
+    }
+
+    private void DeleteAsset(Asset asset)
+    {
+        // Calling our DeleteAsset (application) via the DI object
+        DeleteService.DeleteAsset(asset);
+        LoadAssets();
+    }
+
+
+}

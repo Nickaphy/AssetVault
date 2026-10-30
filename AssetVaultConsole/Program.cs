@@ -11,6 +11,7 @@ public class Program
         string filePath = Path.Combine(AppContext.BaseDirectory, "assets.txt");
         var importService = new AssetImportService(new AssetImporter(filePath));
         var exportService = new AssetExportService(new TempAssetExporter(filePath));
+        var deleteService = new AssetDeleteService(new AssetDeleter(filePath));
         
         if (true)
         {
@@ -30,7 +31,7 @@ public class Program
                         AddAsset(exportService);
                         break;
                     case "2":
-                        ViewAssets(importService);
+                        ViewAssets(importService, deleteService);
                         break;
                     default:
                         Console.WriteLine("Invalid Choice");
@@ -98,7 +99,7 @@ public class Program
         }
     }
 
-    public static void ViewAssets(AssetImportService importService)
+    public static void ViewAssets(AssetImportService importService, AssetDeleteService deleteService)
     {
         bool searchById;
         Guid id = Guid.Empty;
@@ -115,9 +116,69 @@ public class Program
                 Console.WriteLine("Invalid ID format.");
                 continue;
             }
+
+            while (true)
+            {
+                IEnumerable<Asset> assets;
+                try
+                {
+                    assets = importService.ImportAssets().ToList();
+                }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or FormatException or ArgumentException)
+                {
+                    Console.WriteLine($"Could not load assets: {ex.Message}");
+                    return;
+                }
+
+                foreach (Asset asset in assets)
+                {
+                    DisplayAsset(asset);
+                }
+                
+                Console.Write("[1] Delete Asset\n[2] Edit Asset: ");
+                string? editingChoice = Console.ReadLine()?.Trim();
+                if (editingChoice == "2")
+                {
+                    Console.WriteLine("Editing is not implemented yet.");
+                    break;
+                }
+
+                if (editingChoice != "1")
+                {
+                    Console.WriteLine("Invalid choice.");
+                    continue;
+                }
+
+                Console.Write("Enter Asset ID to delete: ");
+                string? deleteString = Console.ReadLine()?.Trim();
+                if (!Guid.TryParse(deleteString, out Guid deleteId))
+                {
+                    Console.WriteLine("Invalid ID format.");
+                    continue;
+                }
+
+                try
+                {
+                    var assetsToSearch = importService.ImportAssets();
+                    Asset? assetToDelete = assetsToSearch.FirstOrDefault(asset => asset.Id == deleteId);
+                    if (assetToDelete is null)
+                    {
+                        Console.WriteLine("No asset found with that ID.");
+                        continue;
+                    }
+
+                    deleteService.DeleteAsset(assetToDelete);
+                    Console.WriteLine("Asset deleted.");
+                }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or FormatException or ArgumentException)
+                {
+                    Console.WriteLine($"Could not delete asset: {ex.Message}");
+                }
+                break;
+            }
             break;
         }
-
+        
         try
         {
             var assets = importService.ImportAssets();

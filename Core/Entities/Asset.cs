@@ -8,7 +8,7 @@ public class Asset
     public string Name { get; private set; }
     public AssetType Type { get; private set; }
     public DateTime PurchaseDate { get; private set; }
-    public bool IsAssigned = false;
+    public bool IsAssigned { get; set; } = false;
     
     //Constructor
     public Asset(Guid id, string name, AssetType type, DateTime purchaseDate)

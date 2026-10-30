@@ -1,0 +1,12 @@
+body { font-family: system-ui, sans-serif; color: #24342f; background: #f8faf9; }
+main { max-width: 1000px; margin: 40px auto; padding: 24px; }
+h1 { margin-bottom: 32px; }
+h2 { font-size: 21px; margin-top: 32px; }
+form { display: grid; gap: 10px; max-width: 380px; }
+input, select, button { font: inherit; padding: 8px 12px; border: 1px solid #b8c6bf; border-radius: 5px; }
+button { cursor: pointer; background: #e8f1eb; color: #24342f; }
+button:hover { background: #d8e8de; }
+table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #dce4df; }
+#blazor-error-ui { display: none; position: fixed; bottom: 0; background: lightyellow; padding: 16px; width: 100%; }
+@media (max-width: 640px) { main { margin: 0; padding: 16px; overflow-x: auto; } }

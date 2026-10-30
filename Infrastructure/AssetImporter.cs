@@ -18,7 +18,7 @@ public class AssetImporter : IAssetImporter
 	public IEnumerable<Asset> Import()
 	{
 		List<Asset> assets = new();
-		StreamReader reader = new StreamReader(filePath);
+		using var reader = new StreamReader(filePath);
 		{
 			while (true)
 			{
@@ -35,10 +35,10 @@ public class AssetImporter : IAssetImporter
 					continue;	
 				}
 				
-				string nameLine = reader.ReadLine();
-				string typeLine =  reader.ReadLine();
-				string dataLine = reader.ReadLine();
-				string assignedLine = reader.ReadLine();
+				string nameLine = reader.ReadLine() ?? throw new FormatException("Incomplete asset record.");
+				string typeLine = reader.ReadLine() ?? throw new FormatException("Incomplete asset record.");
+				string dataLine = reader.ReadLine() ?? throw new FormatException("Incomplete asset record.");
+				string assignedLine = reader.ReadLine() ?? throw new FormatException("Incomplete asset record.");
 				
 				// Reconstruction Asset object
 				
