@@ -14,17 +14,19 @@ public class SqlAssetDeleter : IAssetDelete
         this.contextFactory = contextFactory;
     }
 
-    public void Delete(Asset asset)
+    public void Delete(Guid assetId)
     {
         using var context = contextFactory.CreateDbContext();
         
-        var assetForDeletion = context.Assets.Find(asset.Id);
+        // Find the asset with assetId
+        var assetForDeletion = context.Assets.Find(assetId);
 
         if (assetForDeletion is null)
         {
-            throw new ArgumentException($"No asset found with that ID: {asset.Id}");
+            throw new ArgumentException($"Could not find asset with id {assetId}");
         }
-
+        
+        // Remove the found asset
         context.Assets.Remove(assetForDeletion);
         context.SaveChanges();
     }

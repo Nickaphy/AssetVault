@@ -3,6 +3,7 @@ using Application.ApplicationService;
 using Infrastructure;
 using Application.Ports;
 using Microsoft.EntityFrameworkCore;
+using UI.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,13 +41,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.MapAssetEndpoints(); // Responsible for connecting the API endpoints
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
-
 app.UseAntiforgery();
-
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
 
 app.Run();

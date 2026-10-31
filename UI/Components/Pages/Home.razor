@@ -81,8 +81,9 @@ else
 
     private void DeleteAsset(Asset asset)
     {
+        var assetId = asset.Id;
         // Calling our DeleteAsset (application) via the DI object
-        DeleteService.DeleteAsset(asset);
+        DeleteService.DeleteAsset(assetId);
         LoadAssets();
     }
 
