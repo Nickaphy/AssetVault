@@ -18,14 +18,14 @@ public class SqlAssetDeleter : IAssetDelete
     {
         using var context = contextFactory.CreateDbContext();
         
-        var existingAssets = context.Assets.Find(asset.Id);
+        var assetForDeletion = context.Assets.Find(asset.Id);
 
-        if (existingAssets is null)
+        if (assetForDeletion is null)
         {
             throw new ArgumentException($"No asset found with that ID: {asset.Id}");
         }
 
-        context.Assets.Remove(asset);
+        context.Assets.Remove(assetForDeletion);
         context.SaveChanges();
     }
 }
