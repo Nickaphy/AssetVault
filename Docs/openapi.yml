@@ -1,0 +1,107 @@
+openapi: 3.0.3
+
+info:
+  title: AssetVault API
+  version: 1.0.0
+  description: An API for registering, viewing, and deleting assets.
+
+paths:
+  /api/assets:
+    get:
+      summary: Get all assets
+      operationId: getAssets
+      responses:
+        '200':
+          description: Assets retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asset'
+    post:
+      summary: Register an asset
+      operationId: registerAsset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssetRequest'
+      responses:
+        '201':
+          description: Asset registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '400':
+          description: Invalid asset data
+
+
+
+  /api/assets/{id}:
+    delete:
+      summary: Delete asset by ID
+      operationId: deleteAsset
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Asset deleted successfully
+        '404':
+          description: Asset not found
+
+
+components:
+  schemas:
+    Asset:
+      type: object
+      required:
+        - id
+        - name
+        - type
+        - purchaseDate
+        - isAssigned
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        type:
+          type: string
+          enum: [Laptop, Desktop, Server]
+        purchaseDate:
+          type: string
+          format: date
+        isAssigned:
+          type: boolean
+    
+    CreateAssetRequest:
+      type: object
+      required:
+        - id
+        - name
+        - type
+        - purchaseDate
+        - isAssigned
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        type:
+          type: string
+          enum: [Laptop, Desktop, Server]
+        purchaseDate:
+          type: string
+          format: date
+        isAssigned:
+          type: boolean
