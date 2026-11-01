@@ -15,4 +15,5 @@ builder.AddProject<Projects.UI>("assetvault-ui")
     .WithReference(database)
     .WaitFor(database); // Delay the UI till the database is ready
 
+
 builder.Build().Run();

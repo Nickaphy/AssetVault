@@ -14,7 +14,7 @@ public class SqlAssetDeleter : IAssetDelete
         this.contextFactory = contextFactory;
     }
 
-    public void Delete(Guid assetId)
+    public bool Delete(Guid assetId)
     {
         using var context = contextFactory.CreateDbContext();
         
@@ -23,11 +23,13 @@ public class SqlAssetDeleter : IAssetDelete
 
         if (assetForDeletion is null)
         {
-            throw new ArgumentException($"Could not find asset with id {assetId}");
+            return false;
         }
         
         // Remove the found asset
         context.Assets.Remove(assetForDeletion);
         context.SaveChanges();
+
+        return true;
     }
 }

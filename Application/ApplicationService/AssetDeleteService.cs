@@ -13,9 +13,9 @@ public class AssetDeleteService
         this.deleter = deleter;
     }
 
-    public void DeleteAsset(Guid assetId) 
+    public bool DeleteAsset(Guid assetId) 
     {
-        deleter.Delete(assetId); // Calls the delete Contract
+        return deleter.Delete(assetId); // Calls the delete Contract
     }
 }
 
